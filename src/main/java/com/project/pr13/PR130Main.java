@@ -5,10 +5,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.project.pr13.format.PersonaFormatter;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -66,6 +69,25 @@ public class PR130Main {
      */
     public static Document parseXML(File inputFile) {
         // *************** CODI PRÀCTICA **********************/
-        return null; // Substitueix pel teu        
+        try {
+            if (inputFile.equals(null)){
+                throw new RuntimeException();
+            }
+            DocumentBuilderFactory dbFac = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFac.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+
+            doc.getDocumentElement().normalize();
+
+            return doc;
+
+
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }catch (RuntimeException e){
+            return null;
+        }
+
+
     }
 }

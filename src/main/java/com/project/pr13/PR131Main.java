@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -93,7 +94,15 @@ public class PR131Main {
      */
     private static Document construirDocument() {
         // *************** CODI PRÀCTICA **********************/
-       return null; // Substitueix pel teu
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.newDocument();
+            return doc;
+        } catch (ParserConfigurationException e) {
+            return null;// Substitueix pel teu
+        }
+
     }
 
     /**
@@ -104,5 +113,19 @@ public class PR131Main {
      */
     private static void guardarDocument(Document doc, File fitxerSortida) {
         // *************** CODI PRÀCTICA **********************/
+        try {
+            TransformerFactory trFact = TransformerFactory.newInstance();
+            Transformer tr = trFact.newTransformer();
+            tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"no");
+            tr.setOutputProperty(OutputKeys.INDENT,"yes");
+
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(fitxerSortida);
+
+            tr.transform(source,result);
+
+        } catch (TransformerException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
